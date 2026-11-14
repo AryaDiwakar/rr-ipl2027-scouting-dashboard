@@ -1,0 +1,308 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>RR IPL 2027 — Scouting Shortlist Dashboard</title>
+  <style>
+    :root {
+      --pink: #E60693;
+      --pink-soft: #ffe3f4;
+      --blue: #074EA2;
+      --blue-2: #254AA5;
+      --blue-deep: #062f63;
+      --gold: #C3A11F;
+      --gold-soft: #fff6d8;
+      --bg: #f4f7fb;
+      --card: #ffffff;
+      --text: #1b2430;
+      --muted: #5b677a;
+      --border: #d9e1ef;
+      --green: #1b6b3a;
+      --green-soft: #e8f6ee;
+      --orange: #a85d00;
+      --orange-soft: #fff1df;
+      --shadow: 0 10px 30px rgba(7, 78, 162, 0.10);
+      --radius: 18px;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      font-family: "Times New Roman", Times, Georgia, serif;
+      color: var(--text);
+      background:
+        radial-gradient(1200px 500px at 10% -10%, rgba(230,6,147,0.12), transparent 60%),
+        radial-gradient(900px 400px at 100% 0%, rgba(7,78,162,0.14), transparent 55%),
+        linear-gradient(180deg, #f8fbff 0%, var(--bg) 100%);
+      line-height: 1.45;
+    }
+    .wrap { max-width: 1280px; margin: 0 auto; padding: 28px 22px 40px; }
+    .hero {
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(135deg, var(--blue-deep) 0%, var(--blue) 45%, var(--blue-2) 100%);
+      color: #fff;
+      border-radius: 26px;
+      padding: 34px 34px 28px;
+      box-shadow: 0 18px 40px rgba(7, 78, 162, 0.28);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+    .hero::before {
+      content: ""; position: absolute; inset: -40% auto auto 55%; width: 520px; height: 520px;
+      background: radial-gradient(circle, rgba(230,6,147,0.35) 0%, rgba(230,6,147,0) 70%);
+      pointer-events: none;
+    }
+    .hero::after {
+      content: ""; position: absolute; right: -60px; bottom: -80px; width: 340px; height: 340px;
+      border: 2px solid rgba(195,161,31,0.35); border-radius: 50%;
+      box-shadow: 0 0 0 26px rgba(195,161,31,0.08);
+      pointer-events: none;
+    }
+    .eyebrow { font-size: 14px; letter-spacing: 0.08em; text-transform: uppercase; color: #ffd9f0; margin: 0 0 6px; font-weight: bold; }
+    h1 { margin: 0; font-size: 42px; line-height: 1.05; letter-spacing: 0.2px; }
+    .hero-sub { margin: 10px 0 0; font-size: 18px; color: #eaf1ff; max-width: 820px; }
+    .hero-meta { margin-top: 18px; display: flex; flex-wrap: wrap; gap: 10px; }
+    .chip {
+      display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px; border-radius: 999px;
+      background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.22); color: #fff; font-size: 14px;
+      backdrop-filter: blur(2px);
+    }
+    .chip.gold { background: rgba(195,161,31,0.18); border-color: rgba(195,161,31,0.55); color: #fff4c9; }
+    .chip.pink { background: rgba(230,6,147,0.18); border-color: rgba(230,6,147,0.5); color: #ffe6f6; }
+
+    .grid-kpi { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin: 18px 0 0; }
+    .kpi {
+      background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 18px 16px;
+      box-shadow: var(--shadow); position: relative; overflow: hidden;
+    }
+    .kpi::before { content:""; position:absolute; left:0; top:0; bottom:0; width:5px; background: var(--blue); }
+    .kpi.pink::before { background: var(--pink); } .kpi.green::before { background: var(--green); } .kpi.gold::before { background: var(--gold); }
+    .kpi .num { font-size: 30px; font-weight: bold; color: var(--blue); line-height: 1; }
+    .kpi.pink .num { color: var(--pink); } .kpi.green .num { color: var(--green); } .kpi.gold .num { color: var(--orange); }
+    .kpi .label { margin-top: 6px; color: var(--muted); font-size: 14px; }
+
+    .layout { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 16px; margin-top: 18px; }
+    .card {
+      background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px;
+      box-shadow: var(--shadow);
+    }
+    h2 { margin: 0 0 12px; font-size: 24px; color: var(--blue); line-height: 1.15; }
+    h3 { margin: 0 0 8px; font-size: 18px; color: var(--blue-2); }
+    p { margin: 0 0 10px; font-size: 16px; }
+    .muted { color: var(--muted); }
+
+    .note {
+      border-left: 5px solid var(--gold); background: var(--gold-soft); border-radius: 12px; padding: 14px 16px; margin: 10px 0 0;
+      font-size: 15.5px;
+    }
+    .note.blue { border-left-color: var(--blue); background: #eef5ff; }
+    .note.pink { border-left-color: var(--pink); background: #fff0fa; }
+
+    .list { margin: 8px 0 0 20px; padding: 0; }
+    .list li { margin: 6px 0; font-size: 15.5px; color: var(--text); }
+
+    .section { margin-top: 22px; }
+    .section-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 12px; margin-bottom: 10px; }
+    .section-head p { margin: 0; color: var(--muted); font-size: 15px; }
+    .pill {
+      display: inline-block; padding: 5px 11px; border-radius: 999px; font-size: 13px; font-weight: bold;
+      border: 1px solid var(--border); background: #f7f9fd; color: var(--blue); margin: 3px 6px 0 0;
+    }
+    .pill.high { color: #8b004f; border-color: #f3bfdc; background: #fff0fa; }
+    .pill.mid { color: #7a5200; border-color: #efd39a; background: #fff8e8; }
+
+    .table-wrap { overflow: auto; border-radius: 16px; border: 1px solid var(--border); box-shadow: var(--shadow); background: var(--card); }
+    table { width: 100%; border-collapse: collapse; min-width: 980px; font-size: 14.5px; }
+    thead th {
+      background: linear-gradient(180deg, var(--blue) 0%, var(--blue-2) 100%);
+      color: #fff; text-align: left; padding: 13px 12px; font-size: 14px; letter-spacing: 0.2px;
+      position: sticky; top: 0; z-index: 1;
+    }
+    thead.pink th { background: linear-gradient(180deg, #0a4e9a 0%, #063e80 100%); }
+    tbody td { padding: 12px 12px; border-top: 1px solid var(--border); vertical-align: top; }
+    tbody tr:nth-child(even) { background: #f8faff; }
+    tbody tr:hover { background: #f1f6ff; }
+    .name { font-weight: bold; color: #111827; font-size: 15.5px; }
+    .tag {
+      display: inline-block; padding: 3px 9px; border-radius: 999px; font-size: 12.5px; font-weight: bold; white-space: nowrap;
+      border: 1px solid transparent;
+    }
+    .tag.ok { color: var(--green); background: var(--green-soft); border-color: #bfe3cd; }
+    .tag.cond { color: var(--orange); background: var(--orange-soft); border-color: #f0d2a8; }
+    .tag.sample-e { color: var(--green); background: var(--green-soft); border-color: #bfe3cd; }
+    .tag.sample-b { color: #1f4f99; background: #eaf2ff; border-color: #bfd2f2; }
+    .tag.sample-em { color: #7a3f67; background: #fff0fa; border-color: #efc3e1; }
+    .small { font-size: 13.5px; color: var(--muted); }
+
+    .steps { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 8px; }
+    .step { background: #fbfcff; border: 1px solid var(--border); border-radius: 14px; padding: 14px 14px 12px; }
+    .step-num {
+      width: 30px; height: 30px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center;
+      background: var(--pink); color: #fff; font-weight: bold; margin-bottom: 8px;
+    }
+    .footer { margin-top: 22px; color: var(--muted); font-size: 14px; }
+    code { font-family: Consolas, "Courier New", monospace; font-size: 12.5px; background: #eef3fb; padding: 1px 6px; border-radius: 6px; color: #163b74; }
+    @media (max-width: 980px) {
+      .grid-kpi { grid-template-columns: repeat(2, 1fr); }
+      .layout { grid-template-columns: 1fr; }
+      h1 { font-size: 34px; }
+      .steps { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 640px) {
+      .wrap { padding: 16px 12px 28px; }
+      .hero { padding: 22px 18px; border-radius: 20px; }
+      h1 { font-size: 28px; }
+      .grid-kpi { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="hero">
+      <p class="eyebrow">Rajasthan Royals · IPL 2027</p>
+      <h1>Scouting Shortlist Dashboard</h1>
+      <p class="hero-sub">Top 10 Batters & Top 10 Bowlers — a clear, player-by-player view built from 2022–26 pressure records, role fit, and availability checks. Prepared 14 Nov 2026.</p>
+      <div class="hero-meta">
+        <span class="chip pink">20 players shortlisted</span>
+        <span class="chip gold">Player recruitment report</span>
+        <span class="chip">Move on players once officially released or registered</span>
+      </div>
+    </header>
+
+    <section class="grid-kpi" aria-label="Key numbers">
+      <div class="kpi"><div class="num">20</div><div class="label">Players shortlisted<br>(10 batters + 10 bowlers)</div></div>
+      <div class="kpi green"><div class="num">9</div><div class="label">Players with a strong pressure-ball sample<br>(120+ pressure balls)</div></div>
+      <div class="kpi gold"><div class="num">4</div><div class="label">Conditional on 2026-team release<br>(Jacobs, Raza, Owen, Siddharth)</div></div>
+      <div class="kpi pink"><div class="num">m=120</div><div class="label">Small-sample adjustment for fair comparisons<br>(balanced toward each role’s typical level)</div></div>
+    </section>
+
+    <section class="layout">
+      <div class="card">
+        <h2>How we judged the numbers</h2>
+        <p>We reviewed ball-by-ball performance in the moments that matter most — pressure phases, chasing or setting a target, and recent 2024–26 form.</p>
+        <ul class="list">
+          <li><strong>Fair comparisons:</strong> players with fewer pressure balls were gently adjusted toward the typical level for their role (a standard small-sample adjustment, m=120 balls), so a short hot streak does not outweigh a larger body of work.</li>
+          <li><strong>Sample depth:</strong> <span class="tag sample-e">Established (120+)</span> <span class="tag sample-b">Building (60–119)</span> <span class="tag sample-em">Emerging (under 60 / not in pressure-ball records)</span></li>
+          <li><strong>Steadiness:</strong> for players with 60+ pressure balls, we checked how consistent the numbers stay from match to match (95% range).</li>
+          <li><strong>Different cut-offs tested:</strong> pressure thresholds at q50/q60/q70 to make sure picks hold up under sensible definitions of pressure.</li>
+        </ul>
+        <div class="note blue"><strong>Reading the figures:</strong> “Adjusted strike rate/economy” reflects performance with that fair small-sample adjustment. Raw figures are shown where helpful. For bowlers, a lower adjusted economy points to better control under pressure.</div>
+      </div>
+      <div class="card">
+        <h2>Availability note</h2>
+        <p>IPL 2027 retention, release, and auction-registration lists are not officially published as of <strong>14 Nov 2026</strong> (retention deadline reported 17 Nov 2026; mini-auction reported 16 Dec 2026, Goa).</p>
+        <div class="note"><strong>How to use this list:</strong> treat every player as a scouting pick to move on once <strong>officially released or registered for the auction</strong> and confirmed eligible.</div>
+        <div class="note pink" style="margin-top:10px"><strong>Conditional on release (2026-team mapping in our records):</strong><br>Bevon Jacobs (MI) · Sikandar Raza (PBKS) · Mitchell Owen (PBKS) · Manimaran Siddharth (LSG)</div>
+        <p class="small" style="margin-top:10px">No player statistics, contracts, or availability were fabricated. Ricky Bhui’s 2026 mapping has mixed signals in records and should be verified.</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <h2>RR recruitment priorities</h2>
+          <p>Based on 2022–26 pressure records and the Phase 2 squad-gap review (to be matched with the confirmed 2027 squad and slots).</p>
+        </div>
+      </div>
+      <div class="card" style="padding:16px 18px">
+        <span class="pill high">High: Indian middle-order batting (#4–6)</span>
+        <span class="pill high">High: Indian finisher (#6–7)</span>
+        <span class="pill high">High: Indian pace under pressure (death & PP)</span>
+        <span class="pill mid">Medium–High: Indian seam-bowling allrounder</span>
+        <span class="pill mid">Medium: Wrist-spin / attacking spin support</span>
+        <span class="pill">Selective: Non-redundant overseas only (4 in XI / 8 in squad)</span>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <h2>Top 10 Batters — Scouting Shortlist</h2>
+          <p>Adjusted pressure strike rate and pressure balls faced (2022–26). Raw figures shown where helpful.</p>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>#</th><th>Player</th><th>Nat. / Team</th><th>Role</th><th>Key evidence (2022–26 records / watchlist)</th><th>IPL 2026 map</th><th>Availability</th><th>RR fit</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>1</td><td class="name">Bevon Jacobs</td><td>New Zealand</td><td>#5–6 power finisher</td><td>103 pressure balls, adjusted SR 147.6 (2024–26: 158.3) <span class="tag sample-b">Building (60–119)</span></td><td>Mumbai Indians</td><td><span class="tag cond">Conditional on release</span></td><td>Overseas middle-order impact and finishing depth</td></tr>
+            <tr><td>2</td><td class="name">Najibullah Zadran</td><td>Afghanistan (LHB)</td><td>#5–6 finisher</td><td>171 pressure balls, adjusted SR 152.6 (raw 162.6) <span class="tag sample-e">Established (120+)</span></td><td>Open (no 2026 map)</td><td><span class="tag ok">Eligible upon release/registration</span></td><td>Left-hand finisher for #5–6 pressure hitting</td></tr>
+            <tr><td>3</td><td class="name">Amir Jangoo</td><td>West Indies</td><td>Top/mid / WK-bat</td><td>12 pressure balls, adjusted SR 148.5 <span class="tag sample-em">Emerging (under 60)</span></td><td>Open (no 2026 map)</td><td><span class="tag ok">Eligible upon release/registration</span></td><td>Flexible batting/WK depth (upside profile)</td></tr>
+            <tr><td>4</td><td class="name">Ricky Bhui</td><td>India, Andhra</td><td>#4–6 / WK-bat</td><td>Experienced domestic run-scorer, Andhra lead (watchlist) <span class="tag sample-em">Emerging (pressure-ball record)</span></td><td>2026 map to verify</td><td><span class="tag ok">Eligible upon release/registration</span></td><td>Indian #4–6 / wicketkeeping-bat depth</td></tr>
+            <tr><td>5</td><td class="name">Harvik Desai</td><td>India, Saurashtra</td><td>WK / top-mid flex</td><td>1113 T20 runs, 42 matches, avg 29.28, SR 139.12 (domestic) <span class="tag sample-em">Emerging (pressure-ball record)</span></td><td>Open (no 2026 map)</td><td><span class="tag ok">Eligible upon release/registration</span></td><td>Indian wicketkeeping-bat depth and flexibility</td></tr>
+            <tr><td>6</td><td class="name">Reeza Hendricks</td><td>South Africa</td><td>#2 top-order (floater)</td><td>180 pressure balls, adjusted SR 173.3 (raw 188.3, 2024–26: 187.5) <span class="tag sample-e">Established (120+)</span></td><td>Open (no 2026 map)</td><td><span class="tag ok">Eligible upon release/registration</span></td><td>High-intent top-order option (overseas slot)</td></tr>
+            <tr><td>7</td><td class="name">Jamie Smith</td><td>England</td><td>WK-bat / aggressive mid</td><td>10 pressure balls, adjusted SR 152.3 <span class="tag sample-em">Emerging (under 60)</span>; strong pedigree</td><td>Open (no 2026 map)</td><td><span class="tag ok">Eligible upon release/registration</span></td><td>Dynamic wicketkeeping-bat / middle-order option</td></tr>
+            <tr><td>8</td><td class="name">Sikandar Raza</td><td>Zimbabwe</td><td>#4 batting AR + off-spin</td><td>Batting: 397 balls, adjusted SR 160.4 · Bowling: 331 balls, adjusted economy 8.20 <span class="tag sample-e">Established (120+)</span></td><td>Punjab Kings</td><td><span class="tag cond">Conditional on release</span></td><td>Elite #4 impact with spin overs (all-round value)</td></tr>
+            <tr><td>9</td><td class="name">Ryan Burl</td><td>Zimbabwe (LHB)</td><td>#5 + part-time spin</td><td>Batting: 392 balls, adjusted SR 138.3 · Bowling: 100 balls, adjusted economy 8.56 <span class="tag sample-e">Established</span> / <span class="tag sample-b">Building</span></td><td>Open (no 2026 map)</td><td><span class="tag ok">Eligible upon release/registration</span></td><td>Experienced middle-order utility and left-hand option</td></tr>
+            <tr><td>10</td><td class="name">Mitchell Owen</td><td>Australia</td><td>Power bat / seam AR</td><td>Batting: 39 balls, adjusted SR 128.9 · Bowling: 12 balls <span class="tag sample-em">Emerging (under 60)</span></td><td>Punjab Kings</td><td><span class="tag cond">Conditional on release</span></td><td>Power-hitting and seam-bowling upside</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <h2>Top 10 Bowlers — Scouting Shortlist</h2>
+          <p>Adjusted economy in pressure overs and pressure balls bowled (2022–26). Lower adjusted economy means better control under pressure.</p>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead class="pink">
+            <tr><th>#</th><th>Player</th><th>Nat. / Team</th><th>Role</th><th>Key evidence (2022–26 records / watchlist)</th><th>IPL 2026 map</th><th>Availability</th><th>RR fit</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>1</td><td class="name">Shamar Springer</td><td>West Indies</td><td>Pace AR / seam depth</td><td>94 pressure balls, adjusted economy 10.92 (raw 11.55) · Batting 69 balls <span class="tag sample-b">Building (60–119)</span></td><td>Open (no 2026 map)</td><td><span class="tag ok">Eligible upon release/registration</span></td><td>Seam depth with lower-order batting utility</td></tr>
+            <tr><td>2</td><td class="name">Sonny Baker</td><td>England</td><td>Express pace</td><td>53 pressure balls, raw economy 5.32 / adjusted 8.86 <span class="tag sample-em">Emerging (under 60)</span></td><td>Open (no 2026 map)</td><td><span class="tag ok">Eligible upon release/registration</span></td><td>High-upside hit-the-deck pace option</td></tr>
+            <tr><td>3</td><td class="name">RS Ambrish</td><td>India (U19/TN)</td><td>Fast (PP/death upside)</td><td>U19 World Cup 2026 impact spells <span class="tag sample-em">Emerging (senior numbers to add)</span></td><td>Open (no 2026 map)</td><td><span class="tag ok">Eligible upon release/registration</span></td><td>Indian pace upside for pressure/death role</td></tr>
+            <tr><td>4</td><td class="name">Gudakesh Motie</td><td>West Indies</td><td>SLA middle-overs control</td><td>218 pressure balls, adjusted economy 9.01 (raw 9.03) <span class="tag sample-e">Established (120+)</span></td><td>Open (no 2026 map)</td><td><span class="tag ok">Eligible upon release/registration</span></td><td>Middle-overs control and partnership-breaking</td></tr>
+            <tr><td>5</td><td class="name">Naman Tiwari</td><td>India (UP/U19)</td><td>Left-arm seamer (PP)</td><td>Age-group left-arm profile <span class="tag sample-em">Emerging (senior numbers to add)</span></td><td>Open (no 2026 map)</td><td><span class="tag ok">Eligible upon release/registration</span></td><td>Indian left-arm angle for powerplay variation</td></tr>
+            <tr><td>6</td><td class="name">Benjamin Sears</td><td>New Zealand</td><td>Right-arm fast</td><td>171 pressure balls, adjusted economy 9.18 (raw 8.32) <span class="tag sample-e">Established (120+)</span></td><td>Open (no 2026 map)</td><td><span class="tag ok">Eligible upon release/registration</span></td><td>Overseas pace with established pressure sample</td></tr>
+            <tr><td>7</td><td class="name">Ottneil Baartman</td><td>South Africa</td><td>Death-overs specialist</td><td>136 pressure balls, adjusted economy 10.07 (raw 9.75) <span class="tag sample-e">Established (120+)</span>; SA20/intl death reputation</td><td>Open (no 2026 map)</td><td><span class="tag ok">Eligible upon release/registration</span></td><td>Specialist death-overs skills (yorkers/cutters)</td></tr>
+            <tr><td>8</td><td class="name">Ish Sodhi</td><td>New Zealand</td><td>Wrist-spin (middle overs)</td><td>443 pressure balls, adjusted economy 8.26, raw 8.06 (2024–26: 7.74) <span class="tag sample-e">Established (120+)</span></td><td>Open (no 2026 map)</td><td><span class="tag ok">Eligible upon release/registration</span> <span class="small">(flag: potentially available)</span></td><td>Proven middle-overs leg-spin impact</td></tr>
+            <tr><td>9</td><td class="name">Manimaran Siddharth</td><td>India (TN)</td><td>Left-arm orthodox</td><td>52 pressure balls, adjusted economy 9.30 (raw 10.04) <span class="tag sample-b">Building</span></td><td>Lucknow Super Giants</td><td><span class="tag cond">Conditional on release</span></td><td>Indian spin control depth option</td></tr>
+            <tr><td>10</td><td class="name">Mahli Beardman</td><td>Australia</td><td>Fast (pace upside)</td><td>13 pressure balls, raw economy 6.0 / adjusted 9.99 <span class="tag sample-em">Emerging (under 60)</span></td><td>Open (no 2026 map)</td><td><span class="tag ok">Eligible upon release/registration</span></td><td>Developmental overseas pace upside</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="layout section">
+      <div class="card">
+        <h2>Coverage at a glance</h2>
+        <ul class="list">
+          <li><strong>#4–6 middle-order:</strong> Najibullah Zadran, Sikandar Raza (conditional), Ryan Burl, Ricky Bhui and Harvik Desai provide core options; Amir Jangoo and Jamie Smith add upside profiles.</li>
+          <li><strong>#6–7 finishing power:</strong> Bevon Jacobs (conditional), Najibullah Zadran and Mitchell Owen (conditional) bring finishing traits; additional proven Indian finishing evidence strengthens this role.</li>
+          <li><strong>Indian pace (pressure/death):</strong> RS Ambrish and Naman Tiwari are high-upside Indian developmental picks; Benjamin Sears, Ottneil Baartman, Sonny Baker and Shamar Springer add overseas pace depth.</li>
+          <li><strong>Spin control & wickets:</strong> Ish Sodhi (established leg-spin, 443 pressure balls), Gudakesh Motie (SLA control) and Manimaran Siddharth (conditional Indian depth) support middle-overs plans.</li>
+          <li><strong>All-round balance:</strong> Sikandar Raza, Ryan Burl, Mitchell Owen and Shamar Springer contribute multi-skill value within overseas/conditional gates.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h2>Action plan</h2>
+        <div class="steps">
+          <div class="step"><div class="step-num">1</div><p><strong>When official lists are out:</strong> confirm each target as released/registered and move on 2026-team-mapped players only after release (Jacobs–MI, Raza–PBKS, Owen–PBKS, Siddharth–LSG).</p></div>
+          <div class="step"><div class="step-num">2</div><p><strong>Fill the gaps in evidence:</strong> add powerplay/middle/death splits, #4–7 entry and finishing impact, chase performance, and recent 2025–26 T20 numbers for Emerging-sample players.</p></div>
+          <div class="step"><div class="step-num">3</div><p><strong>Match to the RR squad:</strong> align targets with the confirmed 2027 core, overseas slots (4 in XI / 8 in squad) and budget; prioritise proven Indian #4–6, #6–7 and death-pace options.</p></div>
+          <div class="step"><div class="step-num">4</div><p><strong>Final checks:</strong> NOC/league commitments, fitness/medical, role clarity and identity verification before bidding or approach.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="card section">
+      <h2>Data basis & sources</h2>
+      <p><strong>How numbers were worked out:</strong> ball-by-ball pressure situations (match phase, chasing/setting, recent 2024–26 form) compared against typical levels for each role; smaller samples adjusted for fairness (m=120), with steadiness checked across matches (95% range, 60+ balls) and different pressure cut-offs (q50/q60/q70).</p>
+      <p class="muted"><strong>Performance records:</strong> <code>data/batting_pressure_refined.csv</code>, <code>data/bowling_pressure_refined.csv</code>, <code>outputs/tables/candidate_confidence_and_sample_size_*.csv</code>, <code>data/player_confidence_intervals.csv</code><br>
+      <strong>Availability:</strong> <code>data/player_availability_registry_2027.csv</code>, <code>data/availability_source_log.csv</code> (checked 13 Nov 2026; official 2027 lists pending)<br>
+      <strong>Watchlists/domestic:</strong> <code>outputs/tables/watchlist_*</code>, <code>data/domestic_t20_*_evidence.csv</code><br>
+      <strong>RR gaps/method:</strong> <code>outputs/tables/rr_squad_gaps_updated_2027.csv</code>, <code>outputs/PHASE2_METHODOLOGY_AND_LIMITATIONS.md</code>, <code>PHASE2_AUDIT.md</code></p>
+      <p class="small" style="margin-top:10px">No player statistics, contracts, or availability fabricated. This dashboard reflects the user-submitted shortlist annotated with available evidence and clear availability gates.</p>
+    </section>
+
+    <p class="footer">Files: <code>outputs/RR_IPL2027_USER_SHORTLIST_ATTRACTIVE.pdf</code> · <code>outputs/USER_SUBMITTED_SHORTLIST_REPORT.md</code> · <code>outputs/tables/user_submitted_top20_combined.csv</code> · <code>outputs/VIDEO_SCRIPT_1-2MIN.md</code></p>
+  </div>
+</body>
+</html>

@@ -154,6 +154,39 @@
       h1 { font-size: 28px; }
       .grid-kpi { grid-template-columns: 1fr; }
     }
+
+    /* Animations */
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(26px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes popIn { 0% { opacity: 0; transform: translateY(18px) scale(.98); } 60% { opacity: 1; transform: translateY(-2px) scale(1.01); } 100% { opacity: 1; transform: translateY(0) scale(1); } }
+    @keyframes shimmer { 0% { background-position: 0% 50%; } 100% { background-position: 100% 50%; } }
+    .reveal { opacity: 0; transform: translateY(28px); transition: opacity .7s cubic-bezier(.2,.7,.2,1), transform .7s cubic-bezier(.2,.7,.2,1); will-change: opacity, transform; }
+    .reveal.in-view { opacity: 1; transform: translateY(0); }
+    .hero { animation: fadeIn .9s ease both; }
+    .hero .eyebrow { animation: fadeUp .7s .05s ease both; }
+    .hero h1 { animation: fadeUp .8s .12s ease both; }
+    .hero .hero-sub { animation: fadeUp .8s .22s ease both; }
+    .hero .hero-meta .chip { opacity: 0; animation: popIn .7s ease forwards; }
+    .hero .hero-meta .chip:nth-child(1){ animation-delay: .32s; }
+    .hero .hero-meta .chip:nth-child(2){ animation-delay: .42s; }
+    .hero .hero-meta .chip:nth-child(3){ animation-delay: .52s; }
+    .kpi { opacity: 0; transform: translateY(20px) scale(.985); }
+    .kpi.in-view { animation: popIn .7s cubic-bezier(.2,.7,.2,1) forwards; }
+    .grid-kpi .kpi:nth-child(1){ animation-delay: .05s; }
+    .grid-kpi .kpi:nth-child(2){ animation-delay: .12s; }
+    .grid-kpi .kpi:nth-child(3){ animation-delay: .19s; }
+    .grid-kpi .kpi:nth-child(4){ animation-delay: .26s; }
+    .card, .table-wrap { transition: transform .35s ease, box-shadow .35s ease; }
+    .card:hover, .table-wrap:hover { transform: translateY(-3px); box-shadow: 0 16px 36px rgba(7, 78, 162, 0.14); }
+    tbody tr { opacity: 0; transform: translateY(10px); transition: opacity .45s ease, transform .45s ease, background .25s ease; }
+    tbody tr.in-view { opacity: 1; transform: translateY(0); }
+    .hero::before { animation: fadeIn 1.4s ease both; }
+    .num .count { display: inline-block; min-width: 1ch; }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+      .reveal, .kpi, tbody tr { opacity: 1 !important; transform: none !important; }
+    }
+
   </style>
 </head>
 <body>
@@ -169,14 +202,14 @@
       </div>
     </header>
 
-    <section class="grid-kpi" aria-label="Key numbers">
-      <div class="kpi"><div class="num">20</div><div class="label">Players shortlisted<br>(10 batters + 10 bowlers)</div></div>
-      <div class="kpi green"><div class="num">9</div><div class="label">Players with a strong pressure-ball sample<br>(120+ pressure balls)</div></div>
-      <div class="kpi gold"><div class="num">4</div><div class="label">Conditional on 2026-team release<br>(Jacobs, Raza, Owen, Siddharth)</div></div>
-      <div class="kpi pink"><div class="num">m=120</div><div class="label">Small-sample adjustment for fair comparisons<br>(balanced toward each role’s typical level)</div></div>
+    <section class="grid-kpi reveal" aria-label="Key numbers">
+      <div class="kpi"><div class="num"><span class="count" data-target="20">0</span></div><div class="label">Players shortlisted<br>(10 batters + 10 bowlers)</div></div>
+      <div class="kpi green"><div class="num"><span class="count" data-target="9">0</span></div><div class="label">Players with a strong pressure-ball sample<br>(120+ pressure balls)</div></div>
+      <div class="kpi gold"><div class="num"><span class="count" data-target="4">0</span></div><div class="label">Conditional on 2026-team release<br>(Jacobs, Raza, Owen, Siddharth)</div></div>
+      <div class="kpi pink"><div class="num">m=<span class="count" data-target="120">0</span></div><div class="label">Small-sample adjustment for fair comparisons<br>(balanced toward each role’s typical level)</div></div>
     </section>
 
-    <section class="layout">
+    <section class="layout reveal">
       <div class="card">
         <h2>How we judged the numbers</h2>
         <p>We reviewed ball-by-ball performance in the moments that matter most — pressure phases, chasing or setting a target, and recent 2024–26 form.</p>
@@ -198,7 +231,7 @@
       </div>
     </section>
 
-    <section class="section">
+    <section class="section reveal">
       <div class="section-head">
         <div>
           <h2>RR recruitment priorities</h2>
@@ -215,7 +248,7 @@
       </div>
     </section>
 
-    <section class="section">
+    <section class="section reveal">
       <div class="section-head">
         <div>
           <h2>Top 10 Batters — Scouting Shortlist</h2>
@@ -243,7 +276,7 @@
       </div>
     </section>
 
-    <section class="section">
+    <section class="section reveal">
       <div class="section-head">
         <div>
           <h2>Top 10 Bowlers — Scouting Shortlist</h2>
@@ -271,7 +304,7 @@
       </div>
     </section>
 
-    <section class="layout section">
+    <section class="layout section reveal">
       <div class="card">
         <h2>Coverage at a glance</h2>
         <ul class="list">
@@ -293,7 +326,7 @@
       </div>
     </section>
 
-    <section class="card section">
+    <section class="card section reveal">
       <h2>Data basis & sources</h2>
       <p><strong>How numbers were worked out:</strong> ball-by-ball pressure situations (match phase, chasing/setting, recent 2024–26 form) compared against typical levels for each role; smaller samples adjusted for fairness (m=120), with steadiness checked across matches (95% range, 60+ balls) and different pressure cut-offs (q50/q60/q70).</p>
       <p class="muted"><strong>Performance records:</strong> <code>data/batting_pressure_refined.csv</code>, <code>data/bowling_pressure_refined.csv</code>, <code>outputs/tables/candidate_confidence_and_sample_size_*.csv</code>, <code>data/player_confidence_intervals.csv</code><br>
@@ -305,5 +338,75 @@
 
     <p class="footer">Files: <code>outputs/RR_IPL2027_USER_SHORTLIST_ATTRACTIVE.pdf</code> · <code>outputs/USER_SUBMITTED_SHORTLIST_REPORT.md</code> · <code>outputs/tables/user_submitted_top20_combined.csv</code> · <code>outputs/VIDEO_SCRIPT_1-2MIN.md</code></p>
   </div>
+
+  <script>
+    (function() {
+      const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      function animateCount(el) {
+        if (el.dataset.done) return;
+        el.dataset.done = '1';
+        const target = parseInt(el.dataset.target || '0', 10);
+        if (prefersReduced) { el.textContent = target; return; }
+        const duration = 1200;
+        const start = performance.now();
+        function tick(now) {
+          const p = Math.min((now - start) / duration, 1);
+          const eased = 1 - Math.pow(1 - p, 3);
+          el.textContent = Math.round(eased * target);
+          if (p < 1) requestAnimationFrame(tick); else el.textContent = target;
+        }
+        requestAnimationFrame(tick);
+      }
+
+      function revealObserver() {
+        const opts = { threshold: 0.12, rootMargin: '0px 0px -40px 0px' };
+        const io = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (!entry.isIntersecting) return;
+            const el = entry.target;
+            el.classList.add('in-view');
+            if (el.classList.contains('grid-kpi') || el.classList.contains('kpi')) {
+              el.querySelectorAll('.count').forEach(animateCount);
+              if (el.classList.contains('kpi')) el.querySelectorAll && animateCount(el.querySelector('.count'));
+            }
+            el.querySelectorAll('.count').forEach(animateCount);
+            // stagger table rows inside
+            const rows = el.querySelectorAll('tbody tr');
+            rows.forEach((row, i) => { setTimeout(() => row.classList.add('in-view'), i * 35); });
+            io.unobserve(el);
+          });
+        }, opts);
+
+        document.querySelectorAll('.reveal, .kpi, .grid-kpi').forEach(el => io.observe(el));
+        // also observe table-wraps/sections that contain tables if not already
+        document.querySelectorAll('.table-wrap').forEach(tw => {
+          if (!tw.closest('.reveal')) {
+            tw.classList.add('reveal'); io.observe(tw);
+          }
+        });
+        // kpis individually for load animation
+        document.querySelectorAll('.kpi').forEach((k, i) => {
+          k.style.animationDelay = (0.05 + i * 0.07) + 's';
+        });
+      }
+
+      window.addEventListener('load', function() {
+        // hero/chips already CSS animated; trigger KPI count on load when visible
+        document.querySelectorAll('.grid-kpi .count, .kpi .count').forEach(animateCount);
+        revealObserver();
+        // ensure rows in already-visible areas animate
+        document.querySelectorAll('.reveal').forEach(el => {
+          const r = el.getBoundingClientRect();
+          if (r.top < window.innerHeight * 0.95) {
+            el.classList.add('in-view');
+            el.querySelectorAll('.count').forEach(animateCount);
+            el.querySelectorAll('tbody tr').forEach((row,i)=>setTimeout(()=>row.classList.add('in-view'), i*30));
+          }
+        });
+      });
+    })();
+  </script>
+
 </body>
 </html>
